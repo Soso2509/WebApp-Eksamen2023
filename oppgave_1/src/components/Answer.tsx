@@ -16,7 +16,7 @@ export default function Answer() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center mt-10">
       <label htmlFor="answer">Svar</label>
       <input
         name="answer"

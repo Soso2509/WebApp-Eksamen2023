@@ -24,9 +24,9 @@ export default function Tasks({ children }: { children: ReactNode }) {
     },
   ]
   return (
-    <section>
+    <section className= "flex flex-col justify-center items-center gap-10">
       {tasks.map((task) => (
-        <article key="task.id">
+        <article className="flex-1 gap-20"key={task.id}>
           <p>{task.type}</p>
           <h3>{task.text}</h3>
           <p>{task.data}</p>
