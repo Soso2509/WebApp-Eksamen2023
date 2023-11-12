@@ -6,6 +6,7 @@ import { type Task } from "@/types"
 const tasks: Task[] = [
   {
     id: "124",
+    oppgave:"1",
     text: "Skriv resultatet av regneoperasjonen",
     type: "add",
     data: "9|4",

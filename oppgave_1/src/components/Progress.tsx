@@ -1,34 +1,36 @@
-"use client"
+import { useState } from "react";
+import type { MouseEvent } from "react";
+import { Task } from "@/types";
+import Tasks from "./Tasks";
 
-import { useState } from "react"
-import type { MouseEvent } from "react"
+interface Props {
 
-import { type Task } from "@/types"
+  nextQuestion: () => void;
+  prevQuestion: () => void;
+}
 
-export default function Progress(props: { tasks: Task[] }) {
-  const [state, setState] = useState(0)
-  const currentTask = props.tasks[state]
+export default function Progress({nextQuestion, prevQuestion }: Props) {
+  const [state, setState] = useState(0);
 
+  const next = () => {
+    nextQuestion();
+    setState((prev) => prev + 1);
+  };
 
-  const next = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-    setState(state - 1)
-  }
-
-  const prev = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-    setState(state + 1)
-  }
+  const prev = () => {
+    prevQuestion();
+    setState((prev) => prev - 1);
+  };
 
   return (
     <footer className="mt-4 border-t-slate-300">
       <p>{state}</p>
-      <button onClick={next} className="bg-purple-700 text-white">
+      <button onClick={prev} className="bg-purple-700 text-white">
         Forrige
       </button>
-      <button onClick={prev} className="bg-teal-700 text-white">
+      <button onClick={next} className="bg-teal-700 text-white">
         Neste
       </button>
     </footer>
-  )
+  );
 }

@@ -1,37 +1,58 @@
-import { type ReactNode } from "react"
+"use client"
+import { useState, type ReactNode } from "react"
 
 import { type Task } from "@/types"
 
-export default function Tasks({ children }: { children: ReactNode }) {
+
+interface Props {
+  children: ReactNode;
+  next: () => void;
+  prev: () => void;
+  taskIndex: number;
+  tasks: Task[];
+}
+
+
+export default function Tasks({ children, next, prev, taskIndex }: Props) {
   const tasks: Task[] = [
     {
       id: "123",
+      oppgave:"1",
       text: "Skriv resultatet av regneoperasjonen",
-      data: "9|2",
       type: "add",
+      data: "9|2",
+    
     },
     {
       id: "234",
+      oppgave:"2",
       text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
       type: "add",
-    },
+      data: "3|2",
+    
+    }, 
     {
       id: "356",
+      oppgave:"3",
       text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
       type: "multiply",
+      data: "3|2",
+      
     },
   ]
+
+  
+  const currentTask = tasks[taskIndex];
+  
   return (
+    
     <section className= "flex flex-col justify-center items-center gap-10">
-      {tasks.map((task) => (
-        <article className="flex-1 gap-20"key={task.id}>
-          <p>{task.type}</p>
-          <h3>{task.text}</h3>
-          <p>{task.data}</p>
+    
+       <article className="flex-1 gap-20"key={currentTask.id}>
+          <p>{currentTask.type}</p>
+          <h3>{currentTask.text}</h3>
+          <p>{currentTask.data}</p>
         </article>
-      ))}
       {children}
     </section>
   )
