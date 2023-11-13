@@ -10,24 +10,52 @@ interface Props {
 }
 
 export default function ProgressXTasks({ tasks }: Props) {
-  const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
+  const [taskIndex, setTaskIndex] = useState(0);
+
+  const [answer, setAnswer] = useState<number>();
+  const [correctAnswer, setCorrectAnswer] = useState(false)
+
+  const firstQuestionAnswer = 11;
+  const secondQuestionAnswer = 5;
+  const thirdQuestionAnswer = 6;
+
+
+  const handleAnswerOnClick = (answer: number, taskIndex: number) => {
+      const correctAnswer = 11;
+      if(taskIndex = 0) {
+        if(answer = firstQuestionAnswer) {
+          setCorrectAnswer(true)
+        }
+      }
+      if(taskIndex = 1) {
+        if(answer = secondQuestionAnswer) {
+          setCorrectAnswer(true)
+        }
+      }
+
+      if(taskIndex = 2) {
+        if(answer = thirdQuestionAnswer) {
+          setCorrectAnswer(true)
+        }
+      }    
+  }
 
   const nextQuestion = () => {
-    setCurrentTaskIndex((prev) => prev + 1);
+    setTaskIndex((next) => next+ 1);
     console.log("next");
 
-   
   };
 
   const prevQuestion = () => {
-    setCurrentTaskIndex((prev) => prev - 1);
+    setTaskIndex((prev) => prev - 1);
     console.log("prev");
   };
 
+  
   return (
     <div>
       <Answer />
-      <Tasks tasks={tasks} next={nextQuestion} prev={prevQuestion} taskIndex={currentTaskIndex} />
+      <Tasks tasks={tasks} taskIndex={taskIndex} />
       <Progress nextQuestion={nextQuestion} prevQuestion={prevQuestion} />
     </div>
   );

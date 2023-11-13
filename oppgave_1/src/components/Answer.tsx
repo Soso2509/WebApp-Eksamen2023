@@ -6,6 +6,10 @@ import type { FormEvent, MouseEvent } from "react"
 export default function Answer() {
   const [answer, setAnswer] = useState(0)
 
+  const firstQuestionAnswer = 11;
+  const secondQuestionAnswer = 5;
+  const thirdQuestionAnswer = 6;
+
   const send = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     console.log(answer)
@@ -13,6 +17,7 @@ export default function Answer() {
 
   const update = (event: FormEvent<HTMLInputElement>) => {
     setAnswer(event.currentTarget.valueAsNumber)
+    // console.log("yo")
   }
 
   return (

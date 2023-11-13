@@ -1,46 +1,51 @@
 "use client"
-import { useState, type ReactNode } from "react"
+import { useState, type ReactNode, useEffect } from "react"
 
 import { type Task } from "@/types"
+import { prisma } from "@/lib/prisma";
 
 
 interface Props {
   children: ReactNode;
-  next: () => void;
-  prev: () => void;
   taskIndex: number;
-  tasks: Task[];
+  data: Task[];
+  
 }
 
+// export async function getServerSideProps() {
+//   // Hente data fra eksternt api
+//   const res = await fetch(`http://localhost:3000/api/restapi`);
+//   const data = await res.json();
 
-export default function Tasks({ children, next, prev, taskIndex }: Props) {
+//   // Return the data as props
+//   return { data };
+// };
+
+export default function Tasks({ children, taskIndex, data }: Props) {
+
   const tasks: Task[] = [
     {
       id: "123",
-      oppgave:"1",
       text: "Skriv resultatet av regneoperasjonen",
-      type: "add",
       data: "9|2",
-    
+      type: "add",
     },
     {
       id: "234",
-      oppgave:"2",
       text: "Skriv resultatet av regneoperasjonen",
-      type: "add",
       data: "3|2",
-    
-    }, 
+      type: "add",
+    },
     {
       id: "356",
-      oppgave:"3",
       text: "Skriv resultatet av regneoperasjonen",
-      type: "multiply",
       data: "3|2",
-      
+      type: "multiply",
     },
   ]
 
+  // const tasks = data;
+ 
   
   const currentTask = tasks[taskIndex];
   
@@ -57,3 +62,4 @@ export default function Tasks({ children, next, prev, taskIndex }: Props) {
     </section>
   )
 }
+
