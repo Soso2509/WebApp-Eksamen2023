@@ -2,6 +2,10 @@ import { type ReactNode } from "react"
 
 import { type Task } from "@/types"
 
+type TasksProps = {
+  children: ReactNode;
+};
+
 export default function Tasks({ children }: { children: ReactNode }) {
   const tasks: Task[] = [
     {

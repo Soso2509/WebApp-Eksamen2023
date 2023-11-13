@@ -5,29 +5,55 @@ import type { MouseEvent } from "react"
 
 import { type Task } from "@/types"
 
+
 export default function Progress(props: { tasks: Task[] }) {
-  const [state, setState] = useState(0)
-  const currentTask = props.tasks[state]
+  const [state, setState] = useState(0);
+  const currentTask = props.tasks[state];
 
-  const next = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-    setState(state + 1)
-  }
+  const next = () => {
+    setState(state + 1);
+  };
 
-  const prev = (event: MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-    setState(state - 1)
-  }
+  const prev = () => {
+    setState(state - 1);
+  };
 
   return (
     <footer className="mt-4 border-t-slate-300">
       <p>{state}</p>
       <button onClick={next} className="bg-purple-700 text-white">
-        Forrige
+        Previous
       </button>
       <button onClick={prev} className="bg-teal-700 text-white">
-        Neste
+        Next
       </button>
     </footer>
-  )
+  );
 }
+
+// export default function Progress(props: { tasks: Task[] }) {
+//   const [state, setState] = useState(0)
+//   const currentTask = props.tasks[state]
+
+//   const next = (event: MouseEvent<HTMLButtonElement>) => {
+//     console.log(event)
+//     setState(state + 1)
+//   }
+
+//   const prev = (event: MouseEvent<HTMLButtonElement>) => {
+//     console.log(event)
+//     setState(state - 1)
+//   }
+
+//   return (
+//     <footer className="mt-4 border-t-slate-300">
+//       <p>{state}</p>
+//       <button onClick={next} className="bg-purple-700 text-white">
+//         Forrige
+//       </button>
+//       <button onClick={prev} className="bg-teal-700 text-white">
+//         Neste
+//       </button>
+//     </footer>
+//   )
+// }
