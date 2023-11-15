@@ -1,3 +1,5 @@
+## [Oppgave 2.1 (link til fil)](oppg_2-1.md)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
