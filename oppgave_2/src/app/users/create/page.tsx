@@ -112,7 +112,7 @@ const CreateUser = () => {
 
                 <label htmlFor="puls">Maksimal hjertefrekvens(puls)</label>
                 <select name="puls" id="puls"
-                className=" block whitespace-normal border-0	justify-between" 
+                className=" block whitespace-normal border-0 justify-between h-16" 
                 onChange={handlePulsChange} 
                 value={newAthlete.puls}
                 multiple size="3">
@@ -125,7 +125,7 @@ const CreateUser = () => {
 
                 <label htmlFor="watt">Terkselwatt</label>
                 <select name="watt" id="watt"
-                className=" block whitespace-normal border-0	justify-between" 
+                className=" block whitespace-normal border-0 justify-between  h-16" 
                 onChange={handleWattChange} 
                 value={newAthlete.watt}
                 multiple size="3">
@@ -138,7 +138,7 @@ const CreateUser = () => {
 
                 <label htmlFor="fart">Terkselfart</label>
                 <select name="fart" id="fart"
-                className=" block whitespace-normal border-0	justify-between" 
+                className=" block whitespace-normal border-0 justify-between h-16" 
                 onChange={handleFartChange} 
                 value={newAthlete.fart}
                 multiple size="3">
