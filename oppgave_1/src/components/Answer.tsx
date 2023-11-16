@@ -1,67 +1,101 @@
-"use client"
+import { useState } from "react";
+import type { FormEvent, MouseEvent } from "react";
+import { type Task } from "@/types";
 
-import { useState } from "react"
-import type { FormEvent, MouseEvent } from "react"
-
-
-// Use TypeScript type alias for better readability
 type AnswerProps = {
-  onSubmit: (answer: number) => void;
+  task: Task;
+  onSubmitCorrectAnswer: () => void;
+  onSubmitWrongAnswer: () => void;
+  numAttempts: number;
+  numAttemptsLeft: number;
+
 };
 
-export default function Answer({ onSubmit }: AnswerProps) {
-  const [answer, setAnswer] = useState<number | ''>(0);
+export default function Answer({
+  task,
+  onSubmitCorrectAnswer,
+  onSubmitWrongAnswer,
+  numAttemptsLeft,
+  numAttempts,
 
-  const send = (event: MouseEvent<HTMLButtonElement>) => {
+}: AnswerProps) {
+  const [answer, setAnswer] = useState("");
+  const [message, setMessage] = useState<string | null>(null);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const [showNumAttempts, setShowNumAttempts] = useState(false);
+  const [showCorrectAnswer, setShowAnswer] = useState(false);
+
+  const calculateCorrectAnswer = (task: Task): number | null => {
+    const [num1, num2] = task.data.split("|").map(Number);
+
+    let result: number | null = null;
+
+    if (task.type === "add") {
+      result = num1 + num2;
+    } else if (task.type === "subtract") {
+      result = num1 - num2;
+    } else if (task.type === "multiply") {
+      result = num1 * num2;
+    } else if (task.type === "divide") {
+      result = num1 / num2;
+    }
+
+    return result;
+  };
+
+  const correctAnswer = calculateCorrectAnswer(task);
+
+
+  const sendAnswer = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    onSubmit(answer);
+    const userAnswer = Number(answer);
+    const correctAnswerNumber = Number(correctAnswer);
+
+    if (userAnswer === correctAnswerNumber) {
+      setMessage("Bra jobba!!");
+      setIsCorrectAnswer(true);
+      onSubmitCorrectAnswer();
+    } else {
+      setMessage("Forsøk igjen");
+      setShowNumAttempts(true);
+      onSubmitWrongAnswer();
+    }
   };
 
   const update = (event: FormEvent<HTMLInputElement>) => {
-  
-     setAnswer(event.currentTarget.valueAsNumber);
+    const value = event.currentTarget.value;
+    const number = value === "" ? NaN : Number(value);
+
+    if (!isNaN(number)) {
+      setAnswer(number.toString());
+      const correctAnswerNumber = Number(correctAnswer);
+
+      if (number === correctAnswerNumber) {
+        setMessage(null);
+      } else {
+        setMessage(null);
+      }
+    } else {
+      setAnswer("");
+      setMessage(null);
+    }
   };
 
+  const inputId = `answer-${task.id}- 1`;
   return (
     <div>
-      <label htmlFor="answer">Answer</label>
-      <input
-        name="answer"
-        type="number"
-        placeholder="Enter your answer here"
-        onInput={update}
-      />
-      {3 * 2 === answer ? "Well done!" : null}
-      <button onClick={send}>Send</button>
+      <label htmlFor={inputId}>Svar</label>
+      <input id={inputId} name={"answer"} type="text" placeholder="Sett svar her" onChange={update} value={answer}/>
+
+      <button onClick={sendAnswer}>Send</button>
+      {isCorrectAnswer && message && <div>{message}</div>}
+
+      {showNumAttempts && (<div><p>{numAttemptsLeft} av {numAttempts} forsøk igjen</p></div>)}
+
+      {!showCorrectAnswer && numAttemptsLeft === 0 && (<button onClick={() => { setShowAnswer(true); }}>Vis svaret</button>)}
+
+      {showCorrectAnswer && correctAnswer !== null && (<div>Korrekt svar: {correctAnswer}</div>)}
+
     </div>
   );
 }
-
-
-
-// export default function Answer() {
-//   const [answer, setAnswer] = useState(0)
-
-//   const send = (event: MouseEvent<HTMLButtonElement>) => {
-//     event.preventDefault()
-//     console.log(answer)
-//   }
-
-//   const update = (event: FormEvent<HTMLInputElement>) => {
-//     setAnswer(event.currentTarget.valueAsNumber)
-//   }
-
-//   return (
-//     <div>
-//       <label htmlFor="answer">Svar</label>
-//       <input
-//         name="answer"
-//         type="text"
-//         placeholder="Sett svar her"
-//         onInput={update}
-//       />
-//       {9 + 2 === answer ? "Bra jobbet!" : null}
-//       <button onClick={send}>Send</button>
-//     </div>
-//   )
-// }

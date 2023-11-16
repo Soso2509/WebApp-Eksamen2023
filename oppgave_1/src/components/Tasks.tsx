@@ -1,42 +1,28 @@
-import { type ReactNode } from "react"
+import { ReactNode } from "react";
+import { Task } from "@/types";
+import {TaskText} from "@/components/Text";
 
-import { type Task } from "@/types"
-
-type TasksProps = {
+export default function Tasks({
+  tasks,
+  children,
+  currentTaskIndex,
+}: {
+  tasks: Task[];
   children: ReactNode;
-};
+  currentTaskIndex: number;
+}) {
+  if (tasks.length === 0) return null;
 
-export default function Tasks({ children }: { children: ReactNode }) {
-  const tasks: Task[] = [
-    {
-      id: "123",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "9|2",
-      type: "add",
-    },
-    {
-      id: "234",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "add",
-    },
-    {
-      id: "356",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "multiply",
-    },
-  ]
+  const task = tasks[currentTaskIndex];
   return (
     <section>
-      {tasks.map((task) => (
-        <article key="task.id">
-          <p>{task.type}</p>
-          <h3>{task.text}</h3>
-          <p>{task.data}</p>
-        </article>
-      ))}
-      {children}
+      <article key={task.id}>
+        <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
+        <p>{task.type}</p>
+        <h3>{task.text}</h3>
+        <p>{task.data}</p>
+        {children}
+      </article>
     </section>
-  )
+  );
 }
