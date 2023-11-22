@@ -1,36 +1,40 @@
-import { useState } from "react";
+"use client"
+
 import type { MouseEvent } from "react";
-import { Task } from "@/types";
-import Tasks from "./Tasks";
+import { type Task } from "../types/index";
 
-interface Props {
-
-  nextQuestion: () => void;
-  prevQuestion: () => void;
+interface ProgressProps {
+  tasks: Task[];
+  isCorrectAnswer: boolean;
+  currentTaskIndex: number;
+  setCurrentTaskIndex: (index: number) => void;
 }
 
-export default function Progress({nextQuestion, prevQuestion }: Props) {
-  const [state, setState] = useState(0);
-
-  const next = () => {
-    nextQuestion();
-    setState((prev) => prev + 1);
+export default function Progress({
+  tasks,
+  isCorrectAnswer,
+  currentTaskIndex,
+  setCurrentTaskIndex
+}: ProgressProps) {
+  const next = (event: MouseEvent<HTMLButtonElement>) => {
+    setCurrentTaskIndex(currentTaskIndex + 1);
   };
 
-  const prev = () => {
-    prevQuestion();
-    setState((prev) => prev - 1);
+  const prev = (event: MouseEvent<HTMLButtonElement>) => {
+    setCurrentTaskIndex(currentTaskIndex - 1);
   };
 
   return (
     <footer className="mt-4 border-t-slate-300">
-      <p>{state}</p>
-      <button onClick={prev} className="bg-purple-700 text-white">
+      {}
+      <button onClick={prev} className="bg-purple-700 text-white mr-10">
         Forrige
       </button>
-      <button onClick={next} className="bg-teal-700 text-white">
-        Neste
-      </button>
+      {isCorrectAnswer && (
+        <button onClick={next} className="bg-teal-700 text-white ml-20">
+          Neste
+        </button>
+      )}
     </footer>
   );
 }

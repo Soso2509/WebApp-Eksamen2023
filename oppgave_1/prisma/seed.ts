@@ -1,56 +1,39 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-const tasks = [
-  {
-    id: "123",
-    // oppgave: "1",
-    text: "Skriv resultatet av regneoperasjonen",
-    type: "add",
-    data: "9|2",
-  },
-  {
-    id: "234",
-    // oppgave: "2",
-    text: "Skriv resultatet av regneoperasjonen",
-    type: "add",
-    data: "3|2",
-  },
-  {
-    id: "356",
-    // oppgave: "3",
-    text: "Skriv resultatet av regneoperasjonen",
-    type: "multiply",
-    data: "3|2",
-  },
-]
+const taskData = [
+  { text: "Skriv resultatet av regneoperasjonen", type: "add", data: "9|4" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "divide", data: "10|2" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "multiply", data: "8|7" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "subtract", data: "9|5" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "add", data: "5|9" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "add", data: "9|5" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "divide", data: "16|2" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "multiply", data: "8|80" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "subtract", data: "80|5" },
+  { text: "Skriv resultatet av regneoperasjonen", type: "add", data: "54|91" },
+  
+];
 
-const createTasks = async () => {
-  const feedPromises = tasks.map(async (task) => {
-    await prisma.task.create({
-      data: {
-        ...task,
-      },
-    })
-  })
+async function createTasks() {
+  try {
+    await prisma.task.deleteMany();
 
-  // [ Promise { <pending> }, Promise { <pending> } ]
-  console.log(feedPromises)
 
-  await Promise.all(feedPromises)
+    const taskPromises = taskData.map((task) =>
+      prisma.task.create({
+        data: task,
+      })
+    );
+
+    await Promise.all(taskPromises);
+    console.log("Tasks created successfully!");
+  } catch (error) {
+    console.error("Error creating tasks:", error);
+  } finally {
+    await prisma.$disconnect(); 
+  }
 }
 
-async function main() {
-  console.log("Run")
-  // await createTasks() // Call the createTasks function
-}
-
-main()
-  .catch(e => {
-    throw e
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
- 
+createTasks();

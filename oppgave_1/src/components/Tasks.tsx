@@ -1,65 +1,28 @@
-"use client"
-import { useState, type ReactNode, useEffect } from "react"
+import { ReactNode } from "react";
+import { Task } from "@/types";
+import TaskText from "@/components/Text";
 
-import { type Task } from "@/types"
-import { prisma } from "@/lib/prisma";
-
-
-interface Props {
+export default function Tasks({
+  tasks,
+  children,
+  currentTaskIndex,
+}: {
+  tasks: Task[];
   children: ReactNode;
-  taskIndex: number;
-  data: Task[];
-  
-}
+  currentTaskIndex: number;
+}) {
+  if (tasks.length === 0) return null;
 
-// export async function getServerSideProps() {
-//   // Hente data fra eksternt api
-//   const res = await fetch(`http://localhost:3000/api/restapi`);
-//   const data = await res.json();
-
-//   // Return the data as props
-//   return { data };
-// };
-
-export default function Tasks({ children, taskIndex, data }: Props) {
-
-  const tasks: Task[] = [
-    {
-      id: "123",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "9|2",
-      type: "add",
-    },
-    {
-      id: "234",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "add",
-    },
-    {
-      id: "356",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "multiply",
-    },
-  ]
-
-  // const tasks = data;
- 
-  
-  const currentTask = tasks[taskIndex];
-  
+  const task = tasks[currentTaskIndex];
   return (
-    
-    <section className= "flex flex-col justify-center items-center gap-10">
-    
-       <article className="flex-1 gap-20"key={currentTask.id}>
-          <p>{currentTask.type}</p>
-          <h3>{currentTask.text}</h3>
-          <p>{currentTask.data}</p>
-        </article>
-      {children}
+    <section  className= "flex flex-col justify-center items-center gap-10">
+      <article key={task.id} className="flex flex-col gap-2">
+        <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
+        <p>{task.type}</p>
+        <p>{task.data}</p>
+        <h3>{task.text}</h3>
+        {children}
+      </article>
     </section>
-  )
+  );
 }
-
