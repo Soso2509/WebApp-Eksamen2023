@@ -1,3 +1,7 @@
+import UsersNav from "../../components/UsersNav"
+
 export default function Users() {
-    return <div>Hei </div>
+    return (
+      <UsersNav />  
+    )
   }

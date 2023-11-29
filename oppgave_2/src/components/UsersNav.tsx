@@ -4,33 +4,22 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navigation = [
+    
     {
-        label: "Hjem",
-        href: "/",
+        label: "Edit",
+        href: "users/{id}/edit",
     },
     {
-        label: "Users",
-        href: "/users",
+        label: "Stats",
+        href: "/users/{id}/stats",
     },
     {
-        label: "Create user",
-        href: "/users/create",
+        label: "Goals",
+        href: "/users/{id}/goals",
     },
     {
-        label: "Templates",
-        href: "/templates",
-    },
-    {
-        label: "Create templates",
-        href: "/templates/create",
-    },
-    {
-        label: "Questions",
-        href: "/questions",
-    },
-    {
-        label: "Create questions",
-        href: "/questions/create",
+        label: "Sessions",
+        href: "/users/{id}/sessions",
     }
 ]
 
