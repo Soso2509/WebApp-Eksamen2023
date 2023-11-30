@@ -9,8 +9,8 @@ const UserPresentation = ({setNewTest, newTest}) => {
         console.log("Change Sport ", e.target.value)
     }
 
-    const handleFartChange = (e: string) => {
-        setNewTest({...newTest, fart: e.target.value})
+    const handleSpeedChange = (e: string) => {
+        setNewTest({...newTest, speed: e.target.value})
         console.log("Change Sport ", e.target.value)
     }
 
@@ -45,12 +45,12 @@ const UserPresentation = ({setNewTest, newTest}) => {
             <option className="inline-block w-50px m-1 px-3 rounded-md bg-slate-500 hover:border-2 checked:bg-blue-500" value="90%">90%</option>
         </select>
 
-        <label htmlFor="fart">Terkselfart</label>
-        <p>Valgt: {newTest.fart}</p>
-        <select name="fart" id="fart"
+        <label htmlFor="speed">Terkselspeed</label>
+        <p>Valgt: {newTest.speed}</p>
+        <select name="speed" id="speed"
         className=" block whitespace-normal border-0 justify-between h-16" 
-        onChange={handleFartChange} 
-        value={newTest.fart}
+        onChange={handleSpeedChange} 
+        value={newTest.speed}
         multiple size="3">
             <option className="inline-block w-50px m-1 px-3 rounded-md bg-slate-100 hover:border-2 checked:bg-blue-500" value="50%">50%</option>
             <option className="inline-block w-50px m-1 px-3 rounded-md bg-slate-200 hover:border-2 checked:bg-blue-500" value="60%">60%</option>

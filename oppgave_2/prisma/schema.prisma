@@ -3,13 +3,44 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "webapp-api.vercel.app"
+  url      = "https://webapp-api.vercel.app/api/users"
 }
 
-// TODO: Delete
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id          String   @id @default(uuid())
+  firstName   String   @db.VarChar(200)
+  lastName    String   @db.VarChar(200)
+  gender      String
+  sport       String
+  meta        Meta[]
+  activities  Activities[]
 }
+
+model Meta {
+  heartrate  Number
+  watt       Number
+  speed      Number
+}
+  
+model Activities {
+  createdAt  DateTime   @db.Date
+  goalId     String?     @id @default(uuid())
+  name       String?
+  tags       String?
+  questions  Questions[]
+  intervals  Intervals[]
+}
+
+model Questions {
+  id         String   @id @default(uuid())
+  question   String
+  type       String
+}
+            
+model Intervals {
+  id         String   @id @default(uuid())
+  duration   Number
+  intensity  Number
+}
+        

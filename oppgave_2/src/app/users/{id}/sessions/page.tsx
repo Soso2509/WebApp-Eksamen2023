@@ -23,7 +23,7 @@ const SessionsPage = () => {
                 <UsersItemCards items={items} />
             }
             )}
-            <UsersSessionsForm/>
+            <UsersSessionsForm/> 
         
         </div>
         

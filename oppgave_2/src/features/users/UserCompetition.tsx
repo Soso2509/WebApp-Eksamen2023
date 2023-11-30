@@ -2,8 +2,6 @@
 
 import { useState } from "react"
 
-import UsersGoal from "./UsersGoal"
-
 const UserCompetition = () => {
     const [competitions, setCompetitions] = useState([])
     const [newCompetition, setNewCompetition] = useState({date: "", name: "", place:"", goal: "", type: "", priority:"", comment:""}) 
