@@ -3,54 +3,90 @@ generator client {
 }
 
 datasource db {  
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id          String   @id @default(uuid())
-  gender      String
-  sport       String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  meta        Meta[]
-  activities  Activities[]
+    id              String          @id @default(uuid())
+    userID          String
+    gender          String
+    sport           String
+    meta            Meta[]
+    activities?     Activities[]
 }
 
-model Meta {
-  id         String   @id @default(uuid())
-  heartrate  Int
-  watt       Int
-  speed      Int
-  userId     String
-  user       User   @relation(fields: [userId], references: [id])
-}
-  
-model Activities {
-  id        String  @id @default(uuid())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  name       String?
-  tags       String?
-  userId     String
-  questions  Questions[]
-  intervals  Intervals[]
-  user       User       @relation(fields: [userId], references: [id])
+model Meta{
+    id          String      @id @default(uuid())
+    date        DateTime    @default(now())
+    heartrate   Int
+    watt        Int
+    speed       Int
 }
 
-model Questions {
-  id        String  @id @default(uuid())
-  question   String
-  type       String
-  activitiesId String
-  activities Activities @relation(fields: [activitiesId], references: [id])
+model Activities{
+    id          String @id @default(uuid())
+    date        DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String?
+    tags        Tag[]?
+    question    Question[]?
+    intervals   Interval[]?
+
+    Goal        Goal? @relation(fields: [goalId], references: [id], onDelete: Cascade)
+    goalId      String?
+
 }
-            
-model Intervals {
-  id         String   @id @default(uuid())
-  duration   Int
-  intensity  Int
-  activitiesId String
-  activities Activities @relation(fields: [activitiesId], references: [id])
+
+model Tag{
+    id      String @id @default(uuid())
+    tag     String
 }
-        
+
+model Goal{
+    id              String @id @default(uuid())
+    name            String
+    deadline        DateTime @default(now())
+    comment         String?
+
+    Competition     Competition? @relation(fields: [compId], references: [id], onDelete: Cascade)
+    compId          String?
+
+    User            User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId          String?
+}
+
+model Competition{
+    id          String @id @default(uuid())
+    name        String
+    date        DateTime @default(now())
+    place       String?
+    goal        String?
+    type        String?
+    priority    CompPriority
+    comment     String?
+}
+model Question{
+    id          String @id @default(uuid())
+    question    String
+    type        QuestionAnswerType
+}
+
+model Interval{
+    id          String @id @default(uuid())
+    duration    Int
+    intensity   Int
+}
+
+
+
+enum CompPriority{
+    A
+    B
+    C
+}
+enum QuestionAnswerType{
+    TEXT
+    RANGE
+    MOOD
+}

@@ -18,21 +18,21 @@ async function main() {
 
   const user = await prisma.user.create({
     data: {
-      id: 1,
-      firstName: "Ola",
-      lastName: "Normann",
+      id:" 1",
       gender: "Mann",
       sport: "Ski",
       meta: {
-        heartrate: 168,
+        hartrate: 168,
         watt: 340,
         speed: 20
       },
       activities: [
         {
+          id:" 111",
           date: new Date("2019-01-16 09:00:00"),
         },
         {
+          id:"222",
           date: new Date("2020-01-16 09:00:00"),
           name: "Unike ski øvelser",
           tags: [
@@ -42,19 +42,19 @@ async function main() {
           ],
           questions: [
             {
-              id: 11,
+              id:" 11",
               question: "Hvordan var treninga?",
               type: "radio:mood"
             },
             {
-              id: 12,
+              id:" 12",
               question: "var du uthvilt før?",
               type: "radio:range"
             }
           ],
           intervals: [
             {
-              id: 21,
+              id:" 21",
               duration: 12,
               intensity: 3
             }
