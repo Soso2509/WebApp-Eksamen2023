@@ -6,7 +6,7 @@ import Tasks from "@/components/Tasks";
 import NumberOfTask from "@/components/NumberOfTask";
 import { type Task, type TaskAttempts } from "@/types"
 import React, { useState, useEffect } from 'react'
-import { fetchTasks} from '../controller/taskController'
+import { taskFetch} from '../controller/taskController'
 
 
 
@@ -29,33 +29,60 @@ const Home = () => {
  
   
   useEffect(() => {
-    console.log("kjører")
-    const type = ['add', 'multiply', 'subtract', "divide",];
-    const randomIndex = Math.floor(Math.random() * type.length);
+    console.log("kjører");
+    const operationTypes = ['add', 'multiply', 'subtract', 'divide'];
   
-    const randomType = type[randomIndex];
-    setRandomType(randomType);
+    // Randomly select two operation types
+    const randomOperationType1 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+    let randomOperationType2;
     
+    do {
+      randomOperationType2 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+    } while (randomOperationType1 === randomOperationType2);
+  
+    const combinedOperationTypes = [randomOperationType1, randomOperationType2];
+  
+    setRandomType(combinedOperationTypes.join(' & '));
+  
+
     const getTasks = async () => {
       try {
-        console.log("kjører2")
-        console.log(fetch);
-        const fetchedTasks = await fetchTasks(randomType, taskCount);
-        setTasks(fetchedTasks);
-        console.log(tasks)  
-        const initialAttempts = Object.fromEntries(
-          fetchedTasks.map((task: Task) => [task.id, 3])
+        console.log("kjører2");
+    
+        const fetchedTaskIds: Set<string> = new Set();
+        const tasksPerType = Math.ceil(parseInt(taskCount) / operationTypes.length);
+    
+        const fetchedTasks = await Promise.all(
+          operationTypes.map(async (operationType) => {
+            const randomTasks = await taskFetch(operationType, tasksPerType.toString());
+            
+            // Filter out tasks that have already been fetched
+            const uniqueTasks = randomTasks.filter((task) => !fetchedTaskIds.has(task.id));
+            
+            // Add new task IDs to the set
+            uniqueTasks.forEach((task) => fetchedTaskIds.add(task.id));
+    
+            return uniqueTasks;
+          })
         );
-  
+    
+        const allTasks = fetchedTasks.flat().slice(0, parseInt(taskCount));
+        setTasks(allTasks);
+    
+        const initialAttempts = Object.fromEntries(
+          allTasks.map((task: Task) => [task.id, 3])
+        );
+    
         setAttempts(initialAttempts);
-        // console.log(initialAttempts);
       } catch (errorFetchingTasks) {
-
+        console.error("Error fetching tasks:", errorFetchingTasks);
       }
     };
-  
+    
     void getTasks();
-  }, [random, taskCount]);
+    }, [taskCount]);
+    
+  
 
 
 

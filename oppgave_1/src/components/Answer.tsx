@@ -1,6 +1,5 @@
-import { useState } from "react";
-import type { FormEvent, MouseEvent } from "react";
-import { type Task } from "@/types";
+import { useState, ChangeEvent, FormEvent, MouseEvent } from "react";
+import { Task } from "@/types";
 
 type AnswerProps = {
   task: Task;
@@ -8,7 +7,6 @@ type AnswerProps = {
   onSubmitWrongAnswer: () => void;
   numAttempts: number;
   numAttemptsLeft: number;
-
 };
 
 export default function Answer({
@@ -17,17 +15,15 @@ export default function Answer({
   onSubmitWrongAnswer,
   numAttemptsLeft,
   numAttempts,
-
 }: AnswerProps) {
-  const [answer, setAnswer] = useState("");
-  const [message, setMessage] = useState<string>('');
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
-  const [showNumAttempts, setShowNumAttempts] = useState(false);
-  const [showCorrectAnswer, setShowAnswer] = useState(false);
-  const [points, setPoints] = useState(0);
+  const [answer, setAnswer] = useState<string>("");
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+  const [showNumAttempts, setShowNumAttempts] = useState<boolean>(false);
+  const [showCorrectAnswer, setShowAnswer] = useState<boolean>(false);
+  const [points, setPoints] = useState<number>(0);
 
-
-  const calculateCorrectAnswer = (task: Task): number | null => {
+  const calculate_correct_answer = (task: Task): string | null => {
     const [num1, num2] = task.data.split("|").map(Number);
 
     let result: number | null = null;
@@ -42,45 +38,44 @@ export default function Answer({
       result = num1 / num2;
     }
 
-    return result;
+    return result !== null ? result.toString() : null;
   };
 
-  const correctAnswer = calculateCorrectAnswer(task);
-
+  const correctAnswer = calculate_correct_answer(task);
 
   const sendAnswer = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const userAnswer = Number(answer);
-    const correctAnswerNumber = Number(correctAnswer);
-    
-    if (isCorrectAnswer || answer.trim() === "") {
-      return; 
+    const userAnswer = answer.trim() === "" ? NaN : Number(answer);
+
+    if (isCorrectAnswer || isNaN(userAnswer)) {
+      return;
     }
 
-    if (userAnswer === correctAnswerNumber) {
+    const correctAnswerNumber = Number(correctAnswer);
+
+    if (Math.abs(userAnswer - correctAnswerNumber) < 0.0001) {
       setMessage("Bra jobba!! Testen er fullført");
       setIsCorrectAnswer(true);
       onSubmitCorrectAnswer();
-    } 
-    else {
+    } else {
       setMessage("Forsøk igjen");
       setShowNumAttempts(true);
       onSubmitWrongAnswer();
     }
   };
 
-  const update = (event: FormEvent<HTMLInputElement>) => {
+  const update = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     const number = value === "" ? NaN : Number(value);
 
     if (!isNaN(number)) {
-      setAnswer(number.toString());
+      setAnswer(value);
       const correctAnswerNumber = Number(correctAnswer);
 
       if (number === correctAnswerNumber) {
-        setMessage("");
+        setMessage("Bra jobba!! Testen er fullført");
       } else {
-        setMessage("");
+        setMessage("Forsøk igjen");
       }
     } else {
       setAnswer("");
@@ -88,20 +83,40 @@ export default function Answer({
     }
   };
 
-  const inputId = `answer-${task.id}- 1`;
-  return (
-    <div className="clex flex-col justify-center items-center mt-1">
-      <input id={inputId} name={"answer"} type="text" placeholder="Sett svar her" onChange={update} value={answer}/>
+  const inputId = `answer-${task.id}-1`;
 
-      <button onClick={sendAnswer} disabled={isCorrectAnswer}>Send</button>
+  return (
+    <div className="flex flex-col justify-center items-center mt-1">
+      <input
+        id={inputId}
+        name={"answer"}
+        type="text"
+        placeholder="Sett svar her"
+        onChange={update}
+        value={answer}
+      />
+
+      <button onClick={sendAnswer} disabled={isCorrectAnswer}>
+        Send
+      </button>
+
       {isCorrectAnswer && message && <div>{message}</div>}
 
-      {showNumAttempts && (<div><p>{numAttemptsLeft} av {numAttempts} forsøk igjen</p></div>)}
+      {showNumAttempts && (
+        <div>
+          <p>
+            {numAttemptsLeft} av {numAttempts} forsøk igjen
+          </p>
+        </div>
+      )}
 
-      {!showCorrectAnswer && numAttemptsLeft === 0 && (<button onClick={() => { setShowAnswer(true); }}>Vis svaret</button>)}
+      {!showCorrectAnswer && numAttemptsLeft === 0 && (
+        <button onClick={() => setShowAnswer(true)}>Vis svaret</button>
+      )}
 
-      {showCorrectAnswer && correctAnswer !== null && (<div>Korrekt svar: {correctAnswer}</div>)}
-
+      {showCorrectAnswer && correctAnswer !== null && (
+        <div>Korrekt svar: {correctAnswer}</div>
+      )}
     </div>
   );
 }

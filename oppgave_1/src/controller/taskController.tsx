@@ -1,36 +1,29 @@
-import { type Task } from "@/types"
+
+import { Task } from "@/types";
+
 
 const API_URL = 'http://localhost:3000/api/restapi';
 
-export const fetchTasks = async (random: string, taskCount: string): Promise<Task[]> => {
-    const response = await fetch(`${API_URL}?type=${random}&count=${taskCount}`, { method: "GET" });
+export const taskFetch = async (
+  task_random: string, 
+  task_count: string
+): Promise<Task[]> => {
+  const apiUrl = `${API_URL}?type=${task_random}&count=${task_count}`;
 
-    if (!response.ok) {
-        throw new Error(`Failed to fetch tasks. Status: ${response.status}`);
-    }
+  console.log('Fetching tasks from:', apiUrl);
 
-    const result = await response.json() as { success: boolean; data: Task[] };
-    console.log(`Tasks fetched successfully: `, result.data);
-    return result.data;
+  const response = await fetch(apiUrl, { method: 'GET' });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch tasks. Status: ${response.status}`);
+  }
+
+  const result = await response.json() as { success: boolean; data: Task[] };
+
+  console.log('Tasks fetched successfully:', result.data);
+  return result.data;
 };
 
-
-
-// const prismaa = new PrismaClient();
-
-// export const fetchTasksfromP = async (): Promise<Task[]> => {
-//   try {
-//     const tasksFromPrisma = await prisma.task.findMany();
-//     console.log(tasksFromPrisma);
-//     return tasksFromPrisma;
-//   } catch (error) {
-//     console.error('Error fetching tasks:', error);
-//     throw error; // Rethrow the error to handle it at the calling site
-//   } finally {
-//     await prisma.$disconnect(); // Disconnect from the Prisma client to avoid resource leaks
-//   }
-// };
-
 export default {
-    fetchTasks
-}
+  taskFetch
+};
