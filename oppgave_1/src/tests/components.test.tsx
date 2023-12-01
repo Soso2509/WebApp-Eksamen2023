@@ -155,7 +155,9 @@ describe("Progress Component", () => {
     };
     render(<Answer task={task} onSubmitCorrectAnswer={() => { } } onSubmitWrongAnswer={function (): void {
       throw new Error("Function not implemented.")
-    } } numAttempts={0} numAttemptsLeft={0} />)
+    } } numAttempts={0} numAttemptsLeft={0} onIncorrectAnswer={function (operationType: string): void {
+      throw new Error("Function not implemented.")
+    } } />)
     const inputElement = screen.getByPlaceholderText("Sett svar her")
     const sendButton = screen.getByText("Send")
 

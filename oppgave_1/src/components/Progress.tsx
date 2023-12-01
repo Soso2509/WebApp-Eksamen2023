@@ -1,6 +1,6 @@
 "use client"
 
-import type { MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import { type Task } from "../types/index";
 
 interface ProgressProps {
@@ -16,17 +16,33 @@ export default function Progress({
   currentTaskIndex,
   setCurrentTaskIndex
 }: ProgressProps) {
+
+  const [lastQuestion, setLastQuestion] = useState(false)
+
+
   const next = (event: MouseEvent<HTMLButtonElement>) => {
-    setCurrentTaskIndex(currentTaskIndex + 1);
+    console.log(currentTaskIndex)
+    console.log(tasks)
+
+    if (currentTaskIndex + 1 === tasks.length) {
+      setLastQuestion(true)
+      return currentTaskIndex 
+    }
+
+    else {setCurrentTaskIndex(currentTaskIndex + 1);}
   };
 
   const prev = (event: MouseEvent<HTMLButtonElement>) => {
-    setCurrentTaskIndex(currentTaskIndex - 1);
+    if(currentTaskIndex== 0) {
+      console.log("første spm")
+      return currentTaskIndex;
+    }
+    else setCurrentTaskIndex(currentTaskIndex - 1);
   };
 
   return (
     <footer className="mt-4 border-t-slate-300">
-      {}
+       {lastQuestion && <p>Svar på siste spm</p>}
       <button onClick={prev} className="bg-purple-700 text-white mr-10">
         Forrige
       </button>

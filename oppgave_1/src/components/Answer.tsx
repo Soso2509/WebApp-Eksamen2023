@@ -7,6 +7,8 @@ type AnswerProps = {
   onSubmitWrongAnswer: () => void;
   numAttempts: number;
   numAttemptsLeft: number;
+  onIncorrectAnswer: (operationType: string) => void; // Add a new prop
+
 };
 
 export default function Answer({
@@ -15,6 +17,8 @@ export default function Answer({
   onSubmitWrongAnswer,
   numAttemptsLeft,
   numAttempts,
+  onIncorrectAnswer,
+
 }: AnswerProps) {
   const [answer, setAnswer] = useState<string>("");
   const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean>(false);
@@ -60,6 +64,7 @@ export default function Answer({
       setMessage("Forsøk igjen");
       setShowNumAttempts(true);
       onSubmitWrongAnswer();
+      onIncorrectAnswer(task.type)
     }
   };
 
@@ -99,7 +104,6 @@ export default function Answer({
         Send
       </button>
 
-      {isCorrectAnswer && message && <div>{message}</div>}
 
       {showNumAttempts && (
         <div>
@@ -116,6 +120,8 @@ export default function Answer({
       {showCorrectAnswer && correctAnswer !== null && (
         <div>Korrekt svar: {correctAnswer}</div>
       )}
+      {isCorrectAnswer && message && <div>{message}</div>}
+
     </div>
   );
 }
