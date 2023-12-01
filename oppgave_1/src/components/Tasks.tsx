@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Task } from "@/types";
-import {TaskText} from "@/components/Text";
+import TaskText from "@/components/Text";
 
 export default function Tasks({
   tasks,
@@ -15,12 +15,12 @@ export default function Tasks({
 
   const task = tasks[currentTaskIndex];
   return (
-    <section>
-      <article key={task.id}>
+    <section  className= "flex flex-col justify-center items-center gap-10">
+      <article key={task.id} className="flex flex-col gap-2">
         <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
         <p>{task.type}</p>
-        <h3>{task.text}</h3>
         <p>{task.data}</p>
+        <h3>{task.text}</h3>
         {children}
       </article>
     </section>

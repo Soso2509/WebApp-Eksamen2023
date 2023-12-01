@@ -1,60 +1,110 @@
 "use client"
-
-
 import Answer from "@/components/Answer";
 import Header from "@/components/Header";
 import Progress from "@/components/Progress";
 import Tasks from "@/components/Tasks";
 import NumberOfTask from "@/components/NumberOfTask";
-import TaskTypeDropdown  from "@/components/TaskTypeDropdown";
 import { type Task, type TaskAttempts } from "@/types"
 import React, { useState, useEffect } from 'react'
-import { fetchTasks } from '../controller/taskController'
+import { taskFetch} from '../controller/taskController'
+
+
 
 const Home = () => {
 
-  const [onselectedType, setSelectedType] = useState<string>('add')
+
   const [tasks, setTasks] = useState<Task[]>([])
-  const [ontaskCount, setTaskCount] = useState<string>('5')
+  const [taskCount, setTaskCount] = useState<string>('')
   const [onCurrentTaskIndex, setCurrentTaskIndex] = useState(0);
   const [onAttempts, setAttempts] = useState<TaskAttempts>({})
+  const [taskDone, setTaskDone] = useState(false);
+  const [points, setPoints] = useState(0);
 
+  const [random, setRandomType]= useState('')
+ 
+
+  const [message, setMessage] = useState<string>('');
+  const [showPoints, setShowPoints] = useState(false)
+
+ 
+  
   useEffect(() => {
+    console.log("kjører");
+    const operationTypes = ['add', 'multiply', 'subtract', 'divide'];
+  
+    // Randomly select two operation types
+    const randomOperationType1 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+    let randomOperationType2;
+    
+    do {
+      randomOperationType2 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+    } while (randomOperationType1 === randomOperationType2);
+  
+    const combinedOperationTypes = [randomOperationType1, randomOperationType2];
+  
+    setRandomType(combinedOperationTypes.join(' & '));
+  
+
     const getTasks = async () => {
       try {
-        const fetchedTasks = await fetchTasks(onselectedType, ontaskCount);
-        setTasks(fetchedTasks);
-  
-        const initialAttempts = Object.fromEntries(
-          fetchedTasks.map((task: Task) => [task.id, 3])
+        console.log("kjører2");
+    
+        const fetchedTaskIds: Set<string> = new Set();
+        const tasksPerType = Math.ceil(parseInt(taskCount) / operationTypes.length);
+    
+        const fetchedTasks = await Promise.all(
+          operationTypes.map(async (operationType) => {
+            const randomTasks = await taskFetch(operationType, tasksPerType.toString());
+            
+            // Filter out tasks that have already been fetched
+            const uniqueTasks = randomTasks.filter((task) => !fetchedTaskIds.has(task.id));
+            
+            // Add new task IDs to the set
+            uniqueTasks.forEach((task) => fetchedTaskIds.add(task.id));
+    
+            return uniqueTasks;
+          })
         );
-  
+    
+        const allTasks = fetchedTasks.flat().slice(0, parseInt(taskCount));
+        setTasks(allTasks);
+    
+        const initialAttempts = Object.fromEntries(
+          allTasks.map((task: Task) => [task.id, 3])
+        );
+    
         setAttempts(initialAttempts);
-        console.log(initialAttempts);
       } catch (errorFetchingTasks) {
-
+        console.error("Error fetching tasks:", errorFetchingTasks);
       }
     };
-  
+    
     void getTasks();
-  }, [onselectedType, ontaskCount]);
-  
-
-
-  
-  const onTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(`Selected task type changed to: ${event.target.value}`);
-    setSelectedType(event.target.value)
-  };
+    }, [taskCount]);
+    
 
 
 const onCorrectAnswer = () => {
   setCurrentTaskIndex(prevIndex => {
-    return prevIndex + 1;
+    
+    if (prevIndex + 1 === tasks.length) {
+      setShowPoints(true);
+      setPoints((prevPoints) => prevPoints + 0.5);
+      return prevIndex
+    }
+
+    else {
+      setTaskDone(true) 
+      setPoints((prevPoints) => prevPoints + 0.5);
+      setMessage('Bra jobba!!');
+      return prevIndex + 1
+    };
   });
 };
 
+
   const reduceNumAttempts = (taskId: string) => {
+    console.log("triggered")
     setAttempts((prevAttempts: { [x: string]: number; }) => ({
       ...prevAttempts,
       [taskId]: prevAttempts[taskId] > 0 ? prevAttempts[taskId] - 1 : 0
@@ -62,21 +112,34 @@ const onCorrectAnswer = () => {
   };
   
 
+  const reset = () => {
+    setTasks([]);
+    setTaskCount('');
+    setCurrentTaskIndex(0);
+    setAttempts({});
+    setTaskDone(false);
+    setPoints(0);
+    setMessage('');
+    setShowPoints(false);
+  };
 
   return (
     <main>
       <Header />
-      <NumberOfTask countValue={ontaskCount} onCountChange={setTaskCount} />
-      <TaskTypeDropdown  selectedOperationType={onselectedType} handleTypeChange={onTypeChange} />
+      <NumberOfTask countValue={taskCount} onCountChange={setTaskCount} />
       <Tasks tasks={tasks} currentTaskIndex={onCurrentTaskIndex}>
         {tasks.length > 0 && onCurrentTaskIndex < tasks.length && (
           <>
             <Answer task={tasks[onCurrentTaskIndex]} onSubmitCorrectAnswer={onCorrectAnswer} onSubmitWrongAnswer={() => { reduceNumAttempts(tasks[onCurrentTaskIndex].id); }}
               numAttemptsLeft={onAttempts[tasks[onCurrentTaskIndex].id]} numAttempts={3}
+              
             />
+            {taskDone && <div>{message}</div>}
             <Progress tasks={tasks} isCorrectAnswer={onCurrentTaskIndex > 0} currentTaskIndex={onCurrentTaskIndex}setCurrentTaskIndex={setCurrentTaskIndex} />
           </>
         )}
+        {showPoints && <div>{"Poengscore:  " + points + " points!"}</div>}
+        <button onClick={reset}>Start på nytt</button>
       </Tasks>
 
     </main>
