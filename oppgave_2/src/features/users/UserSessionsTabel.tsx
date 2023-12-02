@@ -14,7 +14,7 @@ const UserSessionsTabel = () => {
 
     return (
         <>
-        <h2>Økter</h2>
+        <h2>Dine Økter</h2>
         <table>
             <thead>
                 <th>Økt</th>
@@ -46,3 +46,5 @@ const UserSessionsTabel = () => {
         </>
     )
 }
+
+export default UserSessionsTabel

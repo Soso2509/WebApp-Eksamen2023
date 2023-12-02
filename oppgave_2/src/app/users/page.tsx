@@ -17,9 +17,24 @@ export default function Users() {
   console.log(users.map(e => e))
 
     return (
-      <UsersNav /> 
-      // {map.users(e => {
+      <div>
+        <UsersNav /> 
+          {/* {map.users(e => { */}
+            <table>
+              <thead>
+                <th>Id</th>
+                <th>Sessions.legth</th>
+                <th>...</th>
+              </thead>
+              <tbody>
+                <tr key={}>
+                  <td>...id</td>
 
-      // })} 
+                </tr>
+              </tbody>
+            </table>
+          {/* })}  */}
+      </div>
+      
     )
   }
