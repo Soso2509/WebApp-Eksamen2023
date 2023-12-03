@@ -1,12 +1,11 @@
 import type { NextRequest } from "next/server"
 
-import * as productController from "@/features/example/product.controller"
+import * as usersController from "@/features/users/users.controller"
 
-export async function GET(request: NextRequest) {
-  const users = request.nextUrl.searchParams.get("data") ?? undefined
-  
+export async function GET() {
+  return usersController.listUsers()
+}
 
-  return productController.listProducts({
-    users
-  })
+export async function POST(request: NextRequest) {
+  return usersController.createUser(request)
 }
