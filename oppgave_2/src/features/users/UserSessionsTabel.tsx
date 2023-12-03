@@ -19,11 +19,12 @@ const UserSessionsTabel = () => {
             <thead>
                 <th>Økt</th>
                 {/* Få antall intervallene fom økten med flest intervaller på en måte */}
-                <th>Intervall 1</th>
-                <th>Intervall 2</th>
-                <th>Intervall 3</th>
-                <th>Intervall 4</th>
-                <th>Intervall 5</th>
+                <th>Dato</th>
+                <th>Navn</th>
+                <th>Tags</th>
+                <th>Type aktivitet</th>
+                <th>Antall spørsmål 5</th>
+                <th>Antall intervaller</th>
             </thead>
             <tbody>
                 {/* hva enn ruta blir */.map( (e, i) => {

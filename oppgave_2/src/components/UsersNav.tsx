@@ -7,7 +7,7 @@ const navigation = [
     
     {
         label: "Edit",
-        href: "users/{id}/edit",
+        href: "/users/{id}/edit",
     },
     {
         label: "Stats",
