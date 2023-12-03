@@ -1,105 +1,55 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
-datasource db {  
-  provider = "vercel"
-  url      = env("DATABASE_URL")
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
-    id         String       @id @default(uuid())
-    userID     String
-    gender     String
-    sport      String
-    meta       Meta[]
-    activities Activities[]
-    Goal       Goal[]
+  id         String       @id @default(uuid())
+  gender     String
+  sport      String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime
+  Activities Activities[]
+  Meta       Meta[]
 }
 
 model Meta {
-    id        String   @id @default(uuid())
-    date      DateTime @default(now())
-    heartrate Int
-    watt      Int
-    speed     Int
-    User      User?    @relation(fields: [userId], references: [id])
-    userId    String?
+  id       String @id @default(uuid())
+  hartrate Int
+  watt     Int
+  speed    Int
+  userId   String
+  User     User   @relation(fields: [userId], references: [id])
 }
 
 model Activities {
-    id        String     @id @default(uuid())
-    date      DateTime   @default(now())
-    updatedAt DateTime   @updatedAt
-    name      String?
-    tags      Tag[]
-    question  Question[]
-    intervals Interval[]
-
-    Goal   Goal?   @relation(fields: [goalId], references: [id], onDelete: Cascade)
-    goalId String?
-
-    User   User?   @relation(fields: [userId], references: [id])
-    userId String?
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  name      String?
+  tags      String?
+  userId    String
+  User      User        @relation(fields: [userId], references: [id])
+  Intervals Intervals[]
+  Questions Questions[]
 }
 
-model Tag {
-    id           String      @id @default(uuid())
-    tag          String
-    Activities   Activities? @relation(fields: [activitiesId], references: [id])
-    activitiesId String?
+model Intervals {
+  id           String     @id
+  duration     Int
+  intensity    Int
+  activitiesId String
+  Activities   Activities @relation(fields: [activitiesId], references: [id])
 }
 
-model Goal {
-    id       String   @id @default(uuid())
-    name     String
-    deadline DateTime @default(now())
-    comment  String?
-
-    Competition Competition? @relation(fields: [compId], references: [id], onDelete: Cascade)
-    compId      String?
-
-    User       User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId     String?
-    Activities Activities[]
-}
-
-model Competition {
-    id       String       @id @default(uuid())
-    name     String
-    date     DateTime     @default(now())
-    place    String?
-    goal     String?
-    type     String?
-    priority CompPriority
-    comment  String?
-    Goal     Goal[]
-}
-
-model Question {
-    id           String             @id @default(uuid())
-    question     String
-    type         QuestionAnswerType
-    Activities   Activities?        @relation(fields: [activitiesId], references: [id])
-    activitiesId String?
-}
-
-model Interval {
-    id           String      @id @default(uuid())
-    duration     Int
-    intensity    Int
-    Activities   Activities? @relation(fields: [activitiesId], references: [id])
-    activitiesId String?
-}
-
-enum CompPriority {
-    A
-    B
-    C
-}
-
-enum QuestionAnswerType {
-    TEXT
-    RANGE
-    MOOD
+model Questions {
+  id           String     @id
+  question     String
+  type         String
+  activitiesId String
+  Activities   Activities @relation(fields: [activitiesId], references: [id])
 }

@@ -3,7 +3,7 @@ export type Activities = {
   date: Date
   updatedAt: Date
   name?: string
-  tags?: Tag[]
+  tags?: string[]
   question?: Question[]
   intervals?: Interval[]
   Goal?: Goal
@@ -11,11 +11,9 @@ export type Activities = {
 
 export type User = {
   id: string
-  userID: string
+  userID?: string
   gender: string
   sport: string
-  meta?: Meta[]
-  activities?: Activities[]
 }
 
 export type Meta = {
