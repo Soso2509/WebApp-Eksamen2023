@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker"
 import { PrismaClient, User } from "@prisma/client"
 
 //https://www.prisma.io/docs/concepts/components/prisma-schema/data-model
@@ -6,8 +6,12 @@ const prisma = new PrismaClient({})
 
 async function main() {
   console.log("Run")
+  const users = [
+    { id: " 1", gender: "Mann", sport: "Ski" },
+    { id: " 1", gender: "Kvinne", sport: "Langrenn" },
+  ]
 
-  // await prisma.user.deleteMany({})
+  await prisma.user.deleteMany({})
 
   // const amountOfUsers = 10;
   // const users: User[] = [];
@@ -31,55 +35,19 @@ async function main() {
           id:" 111",
           date: new Date("2019-01-16 09:00:00"),
         },
-        {
-          id:"222",
-          date: new Date("2020-01-16 09:00:00"),
-          name: "Unike ski øvelser",
-          tags: [
-            "snø",
-            "rulleski",
-            "styrke"
-          ],
-          questions: [
-            {
-              id:" 11",
-              question: "Hvordan var treninga?",
-              type: "radio:mood"
-            },
-            {
-              id:" 12",
-              question: "var du uthvilt før?",
-              type: "radio:range"
-            }
-          ],
-          intervals: [
-            {
-              id:" 21",
-              duration: 12,
-              intensity: 3
-            }
-          ]
-        }
-      ]
-      }
-    });
-
-    //users.push(user);
-
-    const returnUser = await prisma.user.findUnique({
-      where: {
-        id: user.id,
-      }
+      })
     })
 
-    console.log(returnUser)
+    // [ Promise { <pending> }, Promise { <pending> } ]
+    console.log(usersPromises)
+    await Promise.all(usersPromises)
   }
-  
-  //const addUsers = async () => await prisma.user.createMany({ data: users });
 
-  //addUsers();
-  
-//}
-
+  async function main() {
+    console.log("Start seeding ...")
+    await createUsers()
+    console.log("Seeding finished.")
+  }
+}
 
 main()
