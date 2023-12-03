@@ -1,8 +1,14 @@
 "use client"
 import { useEffect, useState } from "react"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
+
+import * as userService from '@/features/users/User.service'
 
 const UsersList = () => {
     const[users, setUsers] = useState([])
+
 
     useEffect(() => {
       const getData = async () => {

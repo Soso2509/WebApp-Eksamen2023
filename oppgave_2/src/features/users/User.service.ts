@@ -16,7 +16,7 @@ export const list = async () => {
 // }
 
 export const create = async ({
-  id,
+    
   gender,
   sport,
 }: Omit<User, "id">): Promise<Result<User>> => {

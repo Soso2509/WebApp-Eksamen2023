@@ -1,6 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import { PrismaClient } from "@prisma/client"
+
+const prisma = new PrismaClient()
 
 
 import UsersCreate from "@/features/users/UsersCreate"
@@ -15,13 +18,7 @@ const CreateUser = () => {
         //uuid?  https://www.uuidgenerator.net/dev-corner/javascript 
     }
 
-    // app.get('https://webapp-api.vercel.app/api/users', async (req, res) => {
-    //     const posts = await prisma.post.findMany({
-    //       where: { published: true },
-    //       include: { author: true },
-    //     })
-    //     res.json(posts)
-    //   })
+   
 
     const submitAthlete = () => {
 

@@ -21,16 +21,16 @@ export const findMany = async (filter?: {
 }
 
 export const create = async ({
-  id,
+userID,
   gender,
   sport,
 }: Omit<User, "id">): Promise<Result<User>> => {
   try {
     const user = await prisma.user.create({
       data: {
-        id,
+        userID,
         sport,
-        gender: gender ?? "draft",
+        gender,
       },
     })
 
