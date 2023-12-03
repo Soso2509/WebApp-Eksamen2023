@@ -21,7 +21,7 @@ const UsersList = () => {
               <table>
                 <thead>
                   <th>Id</th>
-                  <th>Sessions.legth</th>
+                  <th>Session legth</th>
                   <th>...</th>
                 </thead>
                 <tbody>
