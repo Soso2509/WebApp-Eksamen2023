@@ -58,7 +58,7 @@ const Home = () => {
 
     setRandomType(randomOperationType);
   
-
+    //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/
     const getTasks = async () => {
       try {
         console.log("kjører2");

@@ -3,6 +3,8 @@
 import { useState, type MouseEvent } from "react";
 import { type Task } from "../types/index";
 
+
+  //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/
 interface ProgressProps {
   tasks: Task[];
   isCorrectAnswer: boolean;

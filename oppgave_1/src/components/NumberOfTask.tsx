@@ -4,7 +4,7 @@ type NumberOfTaskProps = {
   countValue: string;
   onCountChange: (count: string) => void;
 };
-
+  //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/
 const NumberOfTask: React.FC<NumberOfTaskProps> = ({ countValue, onCountChange }) => {
   const handleCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace(/\D/g, '');

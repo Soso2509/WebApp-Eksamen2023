@@ -10,7 +10,7 @@ type AnswerProps = {
   onIncorrectAnswer: (operationType: string) => void; // Add a new prop
 
 };
-
+  //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/
 export default function Answer({
   task,
   onSubmitCorrectAnswer,
@@ -24,7 +24,7 @@ export default function Answer({
   const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [showNumAttempts, setShowNumAttempts] = useState<boolean>(false);
-  const [showCorrectAnswer, setShowAnswer] = useState<boolean>(false);
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState<boolean>(false);
 
   const calculate_correct_answer = (task: Task): string | null => {
     const [num1, num2] = task.data.split("|").map(Number);
@@ -92,36 +92,12 @@ export default function Answer({
   return (
     <div className="flex flex-col justify-center items-center mt-1">
       <input
-        id={inputId}
-        name={"answer"}
-        type="text"
-        placeholder="Sett svar her"
-        onChange={update}
-        value={answer}
-      />
-
-      <button onClick={sendAnswer} disabled={isCorrectAnswer}>
-        Send
-      </button>
-
-
-      {showNumAttempts && (
-        <div>
-          <p>
-            {numAttemptsLeft} av {numAttempts} forsøk igjen
-          </p>
-        </div>
-      )}
-
-      {!showCorrectAnswer && numAttemptsLeft === 0 && (
-        <button onClick={() => setShowAnswer(true)}>Vis svaret</button>
-      )}
-
-      {showCorrectAnswer && correctAnswer !== null && (
-        <div>Korrekt svar: {correctAnswer}</div>
-      )}
+        id={inputId} name={"answer"} type="text" placeholder="Sett svar her" onChange={update} value={answer}/>
+      <button onClick={sendAnswer} disabled={isCorrectAnswer}>Send</button>
+      {showNumAttempts && (<div><p>{numAttemptsLeft} av {numAttempts} forsøk igjen</p></div>)}
+      {!showCorrectAnswer && numAttemptsLeft === 0 && (<button onClick={() => setShowCorrectAnswer(true)}>Vis svaret</button>)}
+      {showCorrectAnswer && correctAnswer !== null && (<div>Korrekt svar: {correctAnswer}</div>)}
       {isCorrectAnswer && message && <div>{message}</div>}
-
     </div>
   );
 }
