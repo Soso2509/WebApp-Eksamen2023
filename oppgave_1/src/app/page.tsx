@@ -21,30 +21,44 @@ const Home = () => {
   const [points, setPoints] = useState(0);
 
   const [random, setRandomType]= useState('')
- 
+  const [feedback, setFeedback] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<String>('')
 
   const [message, setMessage] = useState<string>('');
   const [showPoints, setShowPoints] = useState(false)
+  
+  const [incorrectAnswers, setIncorrectAnswers] = useState<{ [operationType: string]: number }>({});
 
- 
+  const onIncorrectAnswer = (operationType: string) => {
+    setIncorrectAnswers((prevIncorrectAnswers) => ({
+      ...prevIncorrectAnswers,
+      [operationType]: (prevIncorrectAnswers[operationType] || 0) + 1,
+    }));
+  };
+
+
+  useEffect(() => {
+    if (showPoints) {
+      const mostErrorOperation = Object.keys(incorrectAnswers).reduce((a, b) =>
+        incorrectAnswers[a] > incorrectAnswers[b] ? a : b
+      );
+      setFeedback(true)
+      setFeedbackMessage(`Du burde øve mer på: ${mostErrorOperation}`)
+      console.log(`Øv mer på ${mostErrorOperation}`);
+    }
+  }, [showPoints]);
   
   useEffect(() => {
     console.log("kjører");
     const operationTypes = ['add', 'multiply', 'subtract', 'divide'];
-  
-    // Randomly select two operation types
-    const randomOperationType1 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
-    let randomOperationType2;
-    
-    do {
-      randomOperationType2 = operationTypes[Math.floor(Math.random() * operationTypes.length)];
-    } while (randomOperationType1 === randomOperationType2);
-  
-    const combinedOperationTypes = [randomOperationType1, randomOperationType2];
-  
-    setRandomType(combinedOperationTypes.join(' & '));
-  
+    if (!taskCount) {
+      return; 
+    }  
+    const randomOperationType = operationTypes[Math.floor(Math.random() * operationTypes.length)];
 
+    setRandomType(randomOperationType);
+  
+    //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/
     const getTasks = async () => {
       try {
         console.log("kjører2");
@@ -132,13 +146,14 @@ const onCorrectAnswer = () => {
           <>
             <Answer task={tasks[onCurrentTaskIndex]} onSubmitCorrectAnswer={onCorrectAnswer} onSubmitWrongAnswer={() => { reduceNumAttempts(tasks[onCurrentTaskIndex].id); }}
               numAttemptsLeft={onAttempts[tasks[onCurrentTaskIndex].id]} numAttempts={3}
-              
+              onIncorrectAnswer={onIncorrectAnswer}
             />
             {taskDone && <div>{message}</div>}
             <Progress tasks={tasks} isCorrectAnswer={onCurrentTaskIndex > 0} currentTaskIndex={onCurrentTaskIndex}setCurrentTaskIndex={setCurrentTaskIndex} />
           </>
         )}
         {showPoints && <div>{"Poengscore:  " + points + " points!"}</div>}
+        {feedback && <div>{feedbackMessage}</div>}
         <button onClick={reset}>Start på nytt</button>
       </Tasks>
 
