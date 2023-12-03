@@ -18,7 +18,7 @@ async function main() {
 
   const user = await prisma.user.create({
     data: {
-      id:" 1",
+      id: "1",
       gender: "Mann",
       sport: "Ski",
       meta: {
