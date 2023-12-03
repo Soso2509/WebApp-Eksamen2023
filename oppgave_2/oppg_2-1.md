@@ -204,7 +204,7 @@ Hver utøver skal også ha en tre knapper på siden av seg
 #### `/users/user/create`
 
 Side for å legge til ny utøver\
-Her skal det være felter for å fylle inn TODO:\
+Her skal det være felter for å fylle inn kjønn og sport/aktivitet. Bruker-id skal genereres\
 Skal også være en tilbakeknapp som tar bruker tilbake til `/users` siden
 og en create knapp som tar deg til den opprettede utøveren `/users/user/{id}`
 
@@ -449,9 +449,9 @@ model User {
     id              String          @id @default(uuid())
     userID          String
     gender          String
-    sport           Sport
+    sport           String // eller Enum - Sport
     meta            Meta[]
-    activities?     Activities[]
+    activities     Activities[]
 }
 ```
 
@@ -471,9 +471,9 @@ model Activities{
     date        DateTime @default(now())
     updatedAt   DateTime @updatedAt
     name        String?
-    tags        Tag[]?
-    question    Question[]?
-    intervals   Interval[]?
+    tags        Tag[]
+    question    Question[]
+    intervals   Interval[]
 
     Goal        Goal? @relation(fields: [goalId], references: [id], onDelete: Cascade)
     goalId      String?
@@ -494,7 +494,7 @@ model Template{
     name        String
     tags        Tag[]
     slug        String
-    sport       Sport
+    sport       String? // eller Enum - Sport
     question    Question[]
     intervals   Interval[]
 }
@@ -523,7 +523,7 @@ model Competition{
     place       String?
     goal        String?
     type        String?
-    priority    CompPriority
+    priority    String? // eller Enum - CompPriority
     comment     String?
 }
 ```
@@ -532,7 +532,7 @@ model Competition{
 model Question{
     id          String @id @default(uuid())
     question    String
-    type        QuestionAnswerType
+    type        String // eller Enum - QuestionAnswerType
 }
 ```
 
