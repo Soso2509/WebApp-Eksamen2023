@@ -37,6 +37,7 @@ const Home = () => {
   };
 
 
+  //Some code in here from Chatgpt, reference site: https://chat.openai.com/
   useEffect(() => {
     if (showPoints) {
       const mostErrorOperation = Object.keys(incorrectAnswers).reduce((a, b) =>
@@ -70,10 +71,8 @@ const Home = () => {
           operationTypes.map(async (operationType) => {
             const randomTasks = await taskFetch(operationType, tasksPerType.toString());
             
-            // Filter out tasks that have already been fetched
             const uniqueTasks = randomTasks.filter((task) => !fetchedTaskIds.has(task.id));
             
-            // Add new task IDs to the set
             uniqueTasks.forEach((task) => fetchedTaskIds.add(task.id));
     
             return uniqueTasks;

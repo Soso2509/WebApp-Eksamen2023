@@ -1,7 +1,6 @@
+import { Task } from "@/types"
 
-import { Task } from "@/types";
-
-
+//Reference: Fullstækk LMS/kurs
 const API_URL = 'http://localhost:3000/api/restapi';
 
 export const taskFetch = async (

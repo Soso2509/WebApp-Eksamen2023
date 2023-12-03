@@ -7,7 +7,7 @@ type AnswerProps = {
   onSubmitWrongAnswer: () => void;
   numAttempts: number;
   numAttemptsLeft: number;
-  onIncorrectAnswer: (operationType: string) => void; // Add a new prop
+  onIncorrectAnswer: (operationType: string) => void;
 
 };
   //ask chatgpt to fix the fault in the test base on my code reference site : https://chat.openai.com/

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
+//Reference: Fullstækk LMS/kurs
 const prisma = new PrismaClient();
 
 const taskData = [
