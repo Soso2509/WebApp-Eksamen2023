@@ -8,7 +8,7 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-
+//SRC: kilde: https://github.com/mariuswallin/webapp-2023/tree/main/webapp-05
 import { type User, type Activities, type Result, type WithRelation } from "@/types"
 import * as userService from "./User.service"
 

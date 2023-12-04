@@ -1,6 +1,6 @@
 
 import { faker } from "@faker-js/faker"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, User } from "@prisma/client"
 
 import { type Activities } from "@/types"
 
@@ -18,9 +18,12 @@ const createActivity = (): Activities => {
 
 async function main() {
   await prisma.user.deleteMany({})
+
+
   await prisma.user.create({
     data: {
       id: faker.string.uuid(),
+      userID: "hdfjeowbj",
       gender: "Male",
       sport: "Ski",
     },
@@ -28,25 +31,26 @@ async function main() {
   const publishedUser = await prisma.user.create({
     data: {
       id: "3",
+      userID: "werfff",
       gender: "Female",
       sport: "triatlon",
     },
   })
 
-const activities = Array(10).fill(null).map(createActivity)
+  //const activities = Array(10).fill(null).map(createActivity)
 
-for (const activity of activities) {
-  await prisma.activities.create({
-    data: {
-      ...activity,
-      user: {
-        connect: {
-          id: publishedUser.id,
-        },
-      },
-    },
-  })
-}
+//   for (const activity of activities) {
+//     await prisma.activities.create({
+//       data: {
+//         ...activity,
+//         user: {
+//           connect: {
+//             id: publishedUser.id,
+//           },
+//         },
+//       },
+//     })
+//   }
 }
 
 main().catch((err) => {

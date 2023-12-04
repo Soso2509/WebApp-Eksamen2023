@@ -11,7 +11,7 @@ export type Activities = {
 
 export type User = {
   id: string
-  userID?: string
+  userID: string
   gender: string
   sport: string
 }

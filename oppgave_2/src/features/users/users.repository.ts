@@ -3,6 +3,7 @@ import { type User, type Result } from "@/types"
 
 const prisma = new PrismaClient()
 
+//SRC: kilde: https://github.com/mariuswallin/webapp-2023/tree/main/webapp-05
 
 export const findMany = async (filter?: {
   gender: string | null
