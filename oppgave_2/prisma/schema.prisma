@@ -7,9 +7,50 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// TODO: Delete
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id         String       @id @default(uuid())
+  userID     String       
+  gender     String
+  sport      String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  Activities Activities[]
+  Meta       Meta[]
+}
+
+model Meta {
+  id       String @id @default(uuid())
+  hartrate Int
+  watt     Int
+  speed    Int
+  userId   String
+  User     User   @relation(fields: [userId], references: [id])
+}
+
+model Activities {
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  name      String?
+  tags      String?
+  userId    String
+  User      User        @relation(fields: [userId], references: [id])
+  Intervals Intervals[]
+  Questions Questions[]
+}
+
+model Intervals {
+  id           String     @id
+  duration     Int
+  intensity    Int
+  activitiesId String
+  Activities   Activities @relation(fields: [activitiesId], references: [id])
+}
+
+model Questions {
+  id           String     @id
+  question     String
+  type         String
+  activitiesId String
+  Activities   Activities @relation(fields: [activitiesId], references: [id])
 }

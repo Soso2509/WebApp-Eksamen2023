@@ -1,3 +1,12 @@
+import UsersList from "@/features/users/UsersList";
+
 export default function Home() {
-  return <div>Kode her</div>
+  return (
+    <div>
+      
+      <UsersList/>
+    </div>
+
+
+  )
 }

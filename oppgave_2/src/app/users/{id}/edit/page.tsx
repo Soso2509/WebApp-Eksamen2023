@@ -1,0 +1,3 @@
+const editUserPage = ({id}) => {
+    return
+}
