@@ -53,10 +53,9 @@ const getUserData = (data: unknown) => {
 
 // GET
 // /api/users
-export const listUsers = async (filter?: {
-  sport: string | null
-}): Promise<NextResponse<Result<User[]>>> => {
-  const users = await userService.list(filter)
+export const listUsers = async (
+): Promise<NextResponse<Result<User[]>>> => {
+  const users = await userService.list()
 
   if (!users.success)
     return NextResponse.json(
@@ -64,10 +63,10 @@ export const listUsers = async (filter?: {
         success: false,
         error: users.error,
       },
-      { sport: 500 },
+      { status: 500 },
     )
 
-  return NextResponse.json(users, { sport: 200 })
+  return NextResponse.json(users, { status: 200 })
 }
 
 // POST
@@ -79,7 +78,7 @@ export const createUser = async (
   if (contentType !== "application/json") {
     return NextResponse.json(
       { success: false, error: "Invalid request" },
-      { sport: 415 },
+      { status: 415 },
     )
   }
   const body = await req.json()
@@ -91,16 +90,15 @@ export const createUser = async (
         success: false,
         error: "Missing required fields id, gender, sport",
       },
-      { sport: 400 },
+      { status: 400 },
     )
 
-  const { id, gender, sport, description } = userData
+  const { gender, sport,userID } = userData
 
   const createdUser = await userService.create({
-    id,
+    userID,
     gender,
     sport,
-    description,
   })
 
   if (!createdUser.success) {
@@ -111,7 +109,7 @@ export const createUser = async (
             success: false,
             error: createdUser.error,
           },
-          { sport: 409 },
+          { status: 409 },
         )
       default:
         return NextResponse.json(
@@ -119,12 +117,12 @@ export const createUser = async (
             success: false,
             error: createdUser.error,
           },
-          { sport: 500 },
+          { status: 500 },
         )
     }
   }
 
-  return NextResponse.json(createdUser, { sport: 201 })
+  return NextResponse.json(createdUser, { status: 201 })
 }
 
 // export async function createUser(
@@ -167,17 +165,17 @@ export async function getUserById(
     const user = await prisma.user.findUnique({ where: { id } })
 
     if (!user) {
-      return NextResponse.json({ success: true, data: null }, { sport: 404 })
+      return NextResponse.json({ success: true, data: null }, { status: 404 })
     }
 
     return NextResponse.json(
       { success: true, data: userMapper(user) },
-      { sport: 200 },
+      { status: 200 },
     )
   } catch (error) {
     return NextResponse.json(
       { success: false, error: JSON.stringify(error) },
-      { sport: 500 },
+      { status: 500 },
     )
   }
 }
@@ -190,7 +188,7 @@ export async function updateUserById(
     const user = await prisma.user.findUnique({ where: { id } })
 
     if (!user) {
-      return NextResponse.json({ success: true, data: null }, { sport: 404 })
+      return NextResponse.json({ success: true, data: null }, { status: 404 })
     }
     const body = await request.json()
     if (!body || (typeof body === "object" && !Object.keys(body).length))
@@ -199,7 +197,7 @@ export async function updateUserById(
           success: false,
           error: `Missing required fields`,
         },
-        { sport: 400 },
+        { status: 400 },
       )
 
     const updatedUser = await prisma.user.update({
@@ -209,18 +207,18 @@ export async function updateUserById(
 
     return NextResponse.json(
       { success: true, data: userMapper(updatedUser) },
-      { sport: 200 },
+      { status: 200 },
     )
   } catch (error) {
     return NextResponse.json(
       { success: false, error: JSON.stringify(error) },
-      { sport: 500 },
+      { status: 500 },
     )
   }
 }
 
 export function deleteUserById(request: NextRequest, id: string) {
-  return NextResponse.json({}, { sport: 204 })
+  return NextResponse.json({}, { status: 204 })
 }
 
 export async function createUserItem(
@@ -238,7 +236,7 @@ export async function createUserItem(
     const user = await prisma.user.findUnique({ where: { id } })
 
     if (!user) {
-      return NextResponse.json({ success: true, data: null }, { sport: 404 })
+      return NextResponse.json({ success: true, data: null }, { status: 404 })
     }
 
     const body = await request.json()
@@ -248,7 +246,7 @@ export async function createUserItem(
           success: false,
           error: `Missing required fields`,
         },
-        { sport: 400 },
+        { status: 400 },
       )
 
     const updatedUser = await prisma.user.update({
@@ -271,12 +269,12 @@ export async function createUserItem(
         success: true,
         data: { ...mappedUser, activitiess: mappedUser.activitiess.map(activitiesMapper) },
       },
-      { sport: 201 },
+      { status: 201 },
     )
   } catch (error) {
     return NextResponse.json(
       { success: false, error: JSON.stringify(error) },
-      { sport: 500 },
+      { status: 500 },
     )
   }
 }

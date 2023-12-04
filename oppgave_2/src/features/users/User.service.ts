@@ -18,24 +18,24 @@ export const list = async () => {
 
 //SRC: kilde: https://github.com/mariuswallin/webapp-2023/tree/main/webapp-05
 export const create = async ({
-    
+  userID,
   gender,
   sport,
 }: Omit<User, "id">): Promise<Result<User>> => {
-  const bucket = await usersRepo.exist({ id: id })
-  if (!bucket.success) return { success: false, error: bucket.error }
+  const user = await usersRepo.exist({ id: userID })
+  if (!user.success) return { success: false, error: user.error }
 
-  if (bucket.data) {
+  if (user.data) {
     return {
       success: false,
       type: "User.Duplicate",
-      error: `Item with ${id} already exist`,
+      error: `Item with ${userID} already exist`,
     }
   }
 
   // sender nødvendig data for å lage en survey
   const createdSurvey = await usersRepo.create({
-    id,
+    userID,
     gender,
     sport,
   })
