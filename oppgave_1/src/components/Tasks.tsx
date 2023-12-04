@@ -1,38 +1,28 @@
-import { type ReactNode } from "react"
+import { ReactNode } from "react";
+import { Task } from "@/types";
+import TaskText from "@/components/Text";
 
-import { type Task } from "@/types"
+export default function Tasks({
+  tasks,
+  children,
+  currentTaskIndex,
+}: {
+  tasks: Task[];
+  children: ReactNode;
+  currentTaskIndex: number;
+}) {
+  if (tasks.length === 0) return null;
 
-export default function Tasks({ children }: { children: ReactNode }) {
-  const tasks: Task[] = [
-    {
-      id: "123",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "9|2",
-      type: "add",
-    },
-    {
-      id: "234",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "add",
-    },
-    {
-      id: "356",
-      text: "Skriv resultatet av regneoperasjonen",
-      data: "3|2",
-      type: "multiply",
-    },
-  ]
+  const task = tasks[currentTaskIndex];
   return (
-    <section>
-      {tasks.map((task) => (
-        <article key="task.id">
-          <p>{task.type}</p>
-          <h3>{task.text}</h3>
-          <p>{task.data}</p>
-        </article>
-      ))}
-      {children}
+    <section  className= "flex flex-col justify-center items-center gap-10">
+      <article key={task.id} className="flex flex-col gap-2">
+        <TaskText text={"Hva blir resultatet av regneoperasjonen?"} />
+        <p>{task.type}</p>
+        <p>{task.data}</p>
+        <h3>{task.text}</h3>
+        {children}
+      </article>
     </section>
-  )
+  );
 }
