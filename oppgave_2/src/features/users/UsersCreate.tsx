@@ -2,62 +2,41 @@ import UserPresentation from "./UserPresentation"
 
 const UserCreate = ({newAthlete, setNewAthlete, newTest, setNewTest, submitAthlete}) => {
 
-    const handleFirstNameChange = (e: string) => {
-        setNewAthlete({...newAthlete, firstname: e.target.value})
-        console.log("Change Athleate ", e.target.value)
-    }
-    const handleLastNameChange = (e: string) => {
-        setNewAthlete({...newAthlete, lastname: e.target.value})
-        console.log("Change Athleate ", e.target.value)
-    }
 
     const handleGenderChange = (e: string) => {
         setNewAthlete({...newAthlete, gender: e.target.value})
         console.log("Change Gender ", e.target.value)
     }
-    
+
     const handleSportChange = (e: string) => {
         setNewAthlete({...newAthlete, sport: e.target.value})
         console.log("Change Sport ", e.target.value)
     }
 
-    
 
 
-    
+
+
 
     return (
         <div className="mx-20">
             <h1>Opprett bruker</h1>
             <form onSubmit={submitAthlete}
             className="flex flex-col max-w-4xl justify-center">
-                <label htmlFor="firstname">Fornavn: </label>
-                <input type="text" id="firstname" 
-                onChange={handleFirstNameChange} 
-                value={newAthlete.firstname} 
-                placeholder="Skriv inn fult navn"
-                className="text-black" />
-
-                <label htmlFor="lastname">Etternavn: </label>
-                <input type="text" id="lastname" 
-                onChange={handleLastNameChange} 
-                value={newAthlete.lastname} 
-                placeholder="Skriv inn fult navn"
-                className="text-black" />
 
                 <label htmlFor="gender">Kjønn: </label>
-                <select name="gender" id="gender" 
-                onChange={handleGenderChange} 
+                <select name="gender" id="gender"
+                onChange={handleGenderChange}
                 value={newAthlete.gender}>
                     <option value="" disabled selected>Velg kjønn</option>
                     <option value="man">Man</option>
                     <option value="kvinne">Kvinne</option>
                     <option value="annet">Annet</option>
                 </select>
-                    
+
                 <label htmlFor="sport">Sport: </label>
-                <select name="sport" id="sport" 
-                onChange={handleSportChange} 
+                <select name="sport" id="sport"
+                onChange={handleSportChange}
                 value={newAthlete.sport}>
                     <option value="" disabled selected>Velg sport</option>
                     <option value="løp">Løp</option>
@@ -67,7 +46,7 @@ const UserCreate = ({newAthlete, setNewAthlete, newTest, setNewTest, submitAthle
                     <option value="svømming">Svømming</option>
                     <option value="styrke">Styrke</option>
                     <option value="annet">Annet</option>
-                </select>   
+                </select>
 
                 <UserPresentation setNewTest={setNewTest} newTest={newTest}/>
 
