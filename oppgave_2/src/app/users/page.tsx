@@ -1,13 +1,13 @@
 "use client"
-import UsersList from "@/features/users/UsersList"
 import UsersNav from "../../components/UsersNav"
+import UsersEditList from "@/features/users/UserEditList"
 
 export default function Users() {
   
     return (
       <div>
         <UsersNav /> 
-        <UsersList/>
+        <UsersEditList/>
       </div>
       
     )

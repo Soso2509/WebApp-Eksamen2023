@@ -14,7 +14,7 @@ const UserData = () => {
 
     return (
         <div>
-            <h2>{user.id</h2>
+            <h2>{user.id}</h2>
         </div>
     )
 }

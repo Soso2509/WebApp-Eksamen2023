@@ -1,15 +1,15 @@
 const UserPresentation = ({ setNewTest, newTest }) => {
-  const handlePulsChange = (e: string) => {
+  const handlePulsChange = (e: number) => {
     setNewTest({ ...newTest, puls: e.target.value })
     console.log("Change Puls ", e.target.value)
   }
 
-  const handleWattChange = (e: string) => {
+  const handleWattChange = (e: number) => {
     setNewTest({ ...newTest, watt: e.target.value })
     console.log("Change Watt ", e.target.value)
   }
 
-  const handleSpeedChange = (e: string) => {
+  const handleSpeedChange = (e: number) => {
     setNewTest({ ...newTest, speed: e.target.value })
     console.log("Change Speed ", e.target.value)
   }
@@ -18,14 +18,15 @@ const UserPresentation = ({ setNewTest, newTest }) => {
     <>
       <h2 className="mt-10">Utøvers presantasjon</h2>
       <label htmlFor="puls">Maksimal hjertefrekvens(puls)</label>
-      <input type="number" id="puls" name="puls" onChange={handlePulsChange} />
-      <label htmlFor="watt">Maksimal hjertefrekvens(puls)</label>
-      <input type="number" id="watt" name="watt" onChange={handleWattChange} />
-      <label htmlFor="speed">Maksimal hjertefrekvens(puls)</label>
+      <input type="number" id="puls" name="puls" value={newTest.puls} onChange={handlePulsChange} />
+      <label htmlFor="watt">Maksimal Watt (Power)</label>
+      <input type="number" id="watt" name="watt" value={newTest.watt} onChange={handleWattChange} />
+      <label htmlFor="speed">Maksimal Fart (Speed)</label>
       <input
         type="number"
         id="speed"
         name="speed"
+        value={newTest.speed}
         onChange={handleSpeedChange}
       />
 
@@ -41,36 +42,36 @@ const UserPresentation = ({ setNewTest, newTest }) => {
         </tr>
         <tr>
           <td>
-            <b>Heartrate</b>
+            <b>Maxpuls</b>
           </td>
           <td>{newTest.puls}</td>
-          <td>{newTest.puls * 0.5}</td>
-          <td>{newTest.puls * 0.6}</td>
-          <td>{newTest.puls * 0.7}</td>
-          <td>{newTest.puls * 0.8}</td>
-          <td>{newTest.puls * 0.9}</td>
+          <td>{Math.round(newTest.puls * 0.5)}</td>
+          <td>{Math.round(newTest.puls * 0.6)}</td>
+          <td>{Math.round(newTest.puls * 0.7)}</td>
+          <td>{Math.round(newTest.puls * 0.8)}</td>
+          <td>{Math.round(newTest.puls * 0.9)}</td>
         </tr>
         <tr>
           <td>
-            <b>Watt</b>
+            <b>Max Watt</b>
           </td>
-          <td>{newTest.watt}</td>
-          <td>{newTest.watt * 0.5}</td>
-          <td>{newTest.watt * 0.6}</td>
-          <td>{newTest.watt * 0.7}</td>
-          <td>{newTest.watt * 0.8}</td>
-          <td>{newTest.watt * 0.9}</td>
+          <td>{Math.round(newTest.watt)}</td>
+          <td>{Math.round(newTest.watt * 0.5)}</td>
+          <td>{Math.round(newTest.watt * 0.6)}</td>
+          <td>{Math.round(newTest.watt * 0.7)}</td>
+          <td>{Math.round(newTest.watt * 0.8)}</td>
+          <td>{Math.round(newTest.watt * 0.9)}</td>
         </tr>
         <tr>
           <td>
-            <b>Speed</b>
+            <b>Max Fart</b>
           </td>
-          <td> {newTest.speed}</td>
-          <td>{newTest.speed * 0.5}</td>
-          <td>{newTest.speed * 0.6}</td>
-          <td>{newTest.speed * 0.7}</td>
-          <td>{newTest.speed * 0.8}</td>
-          <td>{newTest.speed * 0.9}</td>
+          <td> {Math.round(newTest.speed)}</td>
+          <td>{Math.round(newTest.speed * 0.5)}</td>
+          <td>{Math.round(newTest.speed * 0.6)}</td>
+          <td>{Math.round(newTest.speed * 0.7)}</td>
+          <td>{Math.round(newTest.speed * 0.8)}</td>
+          <td>{Math.round(newTest.speed * 0.9)}</td>
         </tr>
       </table>
 

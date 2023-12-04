@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 import * as userService from '@/features/users/User.service'
 import { Link } from "lucide-react"
-import { usePathname } from "next/navigation"
 
 // async function getUsers(){
 //       const user = await prisma.user.findMany({
@@ -15,13 +14,8 @@ import { usePathname } from "next/navigation"
 //       return user;
 //     }
   
-const UsersList = () => {
+const UsersEditList = () => {
     const[users, setUsers] = useState([])
-    const pathname = usePathname()
-  
-    const checkActivePath = (path: string) => {
-      return path === pathname
-    }
   //const user = await getUsers()
 
     useEffect(() => {
@@ -36,7 +30,7 @@ const UsersList = () => {
     //map funker ikke
     //users.users[0].map((e) => console.log(e))
 
-    console.log(users.users)
+    console.log(users)
     
       return (
         <div className="ml-10">
@@ -46,18 +40,26 @@ const UsersList = () => {
               <th className="pr-10 border-2	border-slate-300">userID</th>
               <th className="pr-10 border-2	border-slate-300">Gender</th>
               <th className="pr-10 border-2	border-slate-300">Sport</th>
-              <th className="pr-10 border-2	border-slate-300">Legg til ny økt</th>
-              <th className="pr-10 border-2	border-slate-300">Legg til ny konkuranse</th>
+              <th className="pr-10 border-2	border-slate-300">Økter</th>
+              <th className="pr-10 border-2	border-slate-300">Konkuranser</th>
+              <th className="pr-10 border-2	border-slate-300">Edit user</th>
             </thead>
             <tbody>
               <tr key="ID" className="">
-                <td className="pr-10 border-2	">En ID</td>
-                <td className="pr-10 border-2	">En userID</td>
-                <td className="pr-10 border-2	">Brukerens kjønn</td>
-                <td className="pr-10 border-2	">Sporten til brukeren</td>
-                <td className="pr-10 border-2	" >Link til å lag økt</td> 
-                <td className="pr-10 border-2	">Lag ny konkuranse link</td>
+                <td className="pr-10 border-2 align-text-top">En ID</td>
+                <td className="pr-10 border-2 align-text-top">En userID</td>
+                <td className="pr-10 border-2 align-text-top">Brukerens kjønn</td>
+                <td className="pr-10 border-2 align-text-top">Sporten til brukeren</td>
+                <td className="pr-10 border-2 align-text-top">
+                    <ul>
+                        <li>{/* Link */}Økt 1</li>
+                        <li>Økt 2</li>
+                        <li>Økt 3</li>
+                    </ul></td> 
+                <td className="pr-10 border-2 align-text-top">{/* Link */}Liste med konkuranser</td>
                 {/* {users.users.map(e => <td className="mr-2.5">{e.id}</td>)} */}
+                <td className="pr-10 border-2 align-text-top">{/* Link */}Edit</td>
+
               </tr>
             </tbody>
           </table>
@@ -67,4 +69,4 @@ const UsersList = () => {
 
 }
 
-export default UsersList
+export default UsersEditList
